@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import Product from "./product";
+import Product from "./Product";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 export default function ProductsTab({ tabList, tabPanel }) {
