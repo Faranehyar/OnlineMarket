@@ -1,7 +1,7 @@
 import BootstrapClient from "@/components/libraries/Bootstrap";
 import "./globals.css";
 import Header from "@/components/layout/header";
-
+import Toastify from "@/components/libraries/Toastify"
 
 
 export default function RootLayout({ children }) {
@@ -11,6 +11,8 @@ export default function RootLayout({ children }) {
         <Header/>
         {children}
         <BootstrapClient />
+        <Toastify />
+  
       </body>
     </html>
   );
