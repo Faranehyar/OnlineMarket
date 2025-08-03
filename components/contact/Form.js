@@ -1,13 +1,16 @@
 "use client"
 
 import { create } from '@/actions/contact';
-import { useFormState } from 'react-dom'
+// import { useFormState } from 'react-dom'
 import SubmitButton from '../SubmitButton';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import { toast } from 'react-toastify';
+import React, { useEffect } from 'react';
+
 
 export default function FormContact() {
-    const [state, formAction] = useFormState(create, {});
+    const [state, formAction] = React.useActionState(create, {});
+
 
     useEffect(() => {
         toast(state?.message, { type: `${state?.status}` });
