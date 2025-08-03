@@ -1,15 +1,21 @@
 "use client"
+
 import React, { useEffect } from 'react';
-import { useFormState } from 'react-dom'
 import { toast } from 'react-toastify';
 import SubmitButton from '@/components/SubmitButton';
 import { checkOtp } from '@/actions/auth';
+import AuthContext from '@/context/AuthContext';
 
 export default function CheckOtpForm() {
-    const [stateOtp, formActionOtp] = React.useActionState(checkOtp, {})
+    const [stateOtp, formActionOtp] = React.useActionState(checkOtp, {});
+    const { loginContext } = useContext(AuthContext)
 
     useEffect(() => {
         toast(stateOtp?.message, { type: `${stateOtp?.status}` });
+        if (stateOtp?.status === 'success') {
+            loginContext(stateOtp.user);
+        }
+
     }, [stateOtp])
 
     return (
