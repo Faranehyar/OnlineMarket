@@ -1,5 +1,5 @@
 const getFetch = async (url) => {
-    const res = await fetch(`http://localhost:8000/api${url}`, {
+    const res = await fetch(`http://127.0.0.1:8000/api${url}`, {
         cache: 'no-store',
         headers: {
             'Content-Type': 'application/json',
@@ -14,8 +14,9 @@ const getFetch = async (url) => {
         throw new Error(`مشکل در دریافت اطلاعات کد : ${res.status}`);
     }
 }
+
 const postFetch = async (url, body) => {
-    const res = await fetch(`http://localhost:8000/api${url}`, {
+    const res = await fetch(`http://127.0.0.1:8000/api${url}`, {
         cache: 'no-store',
         method: 'POST',
         headers: {
