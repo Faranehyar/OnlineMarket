@@ -2,6 +2,7 @@
 
 import { postFetch } from "@/utils/fetch";
 import { handleError } from "@/utils/helper";
+import { cookies } from 'next/headers';
 
 async function login(stateLogin, formData) {
     const cellphone = formData.get('cellphone');
@@ -21,7 +22,27 @@ async function login(stateLogin, formData) {
         }
     }
 
-  
+    const data = await postFetch('/auth/login', { cellphone });
+
+    if (data.status === 'success') {
+        cookies().set({
+            name: 'login_token',
+            value: data.data.login_token,
+            httpOnly: true,
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7 // 1 week
+        });
+
+        return {
+            status: data.status,
+            message: "کد ورود با موفقیت برای شماارسال شد",
+        }
+    } else {
+        return {
+            status: data.status,
+            message: handleError(data.message),
+        }
+    }
 
 }
 
