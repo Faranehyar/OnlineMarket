@@ -98,4 +98,60 @@ async function checkOtp(stateOtp, formData) {
 
 }
 
-export { login, checkOtp }
+async function resendOtp(stateResendOtp, formData) {
+    const loginToken = cookies().get('login_token');
+
+    if (!loginToken) {
+        return {
+            status: "error",
+            message: "توکن ورودی شما معتبر نیست. یکبار دیگر تلاش کنید"
+        }
+    }
+
+    const data = await postFetch('/auth/resend-otp', { login_token: loginToken.value });
+
+    if (data.status === 'success') {
+        cookies().set({
+            name: 'login_token',
+            value: data.data.login_token,
+            httpOnly: true,
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7 // 1 week
+        });
+
+        return {
+            status: data.status,
+            message: "کد ورود دوباره برای شما ارسال شد",
+        }
+    } else {
+        return {
+            status: data.status,
+            message: handleError(data.message),
+        }
+    }
+
+}
+async function me() {
+    const token = cookies().get('token')
+
+    if (!token) {
+        return {
+            error: 'Not Authorized'
+        }
+    }
+
+    const data = await postFetch('/auth/me', {}, { 'Authorization': `Bearer ${token.value}` });
+
+    if (data.status === 'success') {
+        return {
+            user: data.data
+        }
+    } else {
+        return {
+            error: "User Forbidden"
+        }
+    }
+
+}
+
+export { login, checkOtp, me, resendOtp }
